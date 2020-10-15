@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-/* Добавляю все нужные функции */
+/** Добавляю все нужные функции */
 include_once("functions/connect.php");
 include_once("functions/login.php");
 include_once("functions/register.php");

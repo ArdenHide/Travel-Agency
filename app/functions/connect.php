@@ -1,5 +1,5 @@
 <?php
-function connect($host='localhost', $user='root', $pass='stas2526', $dbname='travel')
+function connect($host='localhost', $user='root', $pass='rootroot', $dbname='travel')
 {
     $mysqli = @new mysqli($host, $user, $pass, $dbname);
     if ($mysqli->connect_errno) 
