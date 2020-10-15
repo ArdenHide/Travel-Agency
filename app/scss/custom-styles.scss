@@ -1,0 +1,46 @@
+// Your custom styles
+#navbar {
+    border-bottom: 0.4rem  solid #ffbb33;
+}
+
+.close:active,
+.close:focus {
+    outline: none;
+    border: none;
+}
+
+body::-webkit-scrollbar {
+    background: #45526ed8;
+    width: 1rem;
+}
+
+body::-webkit-scrollbar-button:start {
+    background: url(../img/svg/up-arrow.svg) no-repeat center center;
+    background-size: 1rem;
+    cursor: pointer;
+}
+
+body::-webkit-scrollbar-button:end {
+    background: url(../img/svg/down-arrow.svg) no-repeat center center;
+    background-size: 1rem;
+    cursor: pointer;
+}
+
+body::-webkit-scrollbar-track {
+    border-radius: .1rem;
+    background: -webkit-gradient(linear, left top, right top, from(#45526E), color-stop(50%, rgba(69, 82, 110, 0.3)), to(#45526E));
+    background: linear-gradient(90deg, #45526E 0%, rgba(69, 82, 110, 0.3) 50%, #45526E 100%);
+    background-blend-mode: multiply;
+    -webkit-backdrop-filter: blur(0.2rem);
+    backdrop-filter: blur(0.2rem);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #ffbb33 url(../img/svg/scroll-alt-1.svg) no-repeat center center;
+    background-size: .9rem;
+    border-radius: .3rem;
+    -webkit-box-shadow: 0px 0.2rem 0.2rem rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0.2rem 0.2rem rgba(0, 0, 0, 0.35);
+    -webkit-backdrop-filter: blur(0.2rem);
+    backdrop-filter: blur(0.2rem);
+}
