@@ -1,5 +1,10 @@
 <?php
 include_once("./functions/addCountry.php");
+include_once("./functions/delCountry.php");
+include_once("./functions/addCity.php");
+include_once("./functions/delCity.php");
+include_once("./functions/addHotel.php");
+include_once("./functions/delHotel.php");
 ?>
 
 <div class="container elegant-color-dark shadow-lg rounded-lg my-5 p-5">
@@ -85,41 +90,15 @@ include_once("./functions/addCountry.php");
 
             /* Добавить страну */
             if (isset($_POST['addcountry'])) {
-                $country = trim(htmlspecialchars($_POST['country']));
-                $countryInfo = trim(htmlspecialchars($_POST['countryinfo']));
-                $img = $_FILES['filecountry']['name'];
-
-                $imgPath = '../flags/' . $img;
-
                 if ($_FILES['filecountry']['error'][$k] != 0) {
                     /* Ошибка добавления страны errorAddCountry */
                     include_once("pages/modals/errorAddCountry.html");
-                }
-
-                if ($country != "" && $countryInfo != "") {
-                    /**
-                     * Создаю папку страны и ее описание
-                     * Вторым параметром указываются права на папку
-                     * 0777 - администратор
-                     */
-                    if (!is_dir("../hotel src/$country")) {
-                        mkdir("../hotel src/$country", 0777);
-                        
-                        $fd = fopen("../hotel src/$country/Описание.txt", 'w+') or die(include_once("pages/modals/errorAddCountry.html"));
-                        fwrite($fd, $countryInfo);
-                        fclose($fd);
-
-                        $countryInfoPath = "../hotel src/$country/Описание.txt";
-                    }
-
-                    $ins = "insert into countries(`country`, `country_img`, `country_info`) values('$country', '$imgPath', '$countryInfoPath')";
-                    $mysqli->query($ins);
-
-                    /* Успешное добавление страны successAddCountry */
-                    include_once("pages/modals/successAddCountry.html");
                 } else {
-                    /* Ошибка добавления страны errorAddCountry */
-                    include_once("pages/modals/errorAddCountry.html");
+                    addCountry(
+                        trim(htmlspecialchars($_POST['country'])),
+                        trim(htmlspecialchars($_POST['countryinfo'])),
+                        '../flags/' . $_FILES['filecountry']['name']
+                    );
                 }
             }
             /* Удалить выбранные страны */
@@ -140,21 +119,21 @@ include_once("./functions/addCountry.php");
                 include_once("pages/modals/successDelCountry.html");
             }
             /* Удалить страну */
-            if (isset($_POST['delcountryOne'])) {
-                foreach ($_POST as $k => $v) {
-                    if (substr($k, 0, 2) == "cb") {
-                        $idc = substr($k, 2);
-                        $del = 'delete from countries where id=' . $idc;
-                        $mysqli->query($del);
-                        if ($mysqli->errno) {
-                            /* Ошибка удаления страны errorDelCountry */
-                            include_once("pages/modals/errorDelCountry.html");
-                        }
-                    }
-                }
-                /* Успешное удаление страны successDelCountry */
-                include_once("pages/modals/successDelCountry.html");
-            }
+            // if (isset($_POST['delcountryOne'])) {
+            //     foreach ($_POST as $k => $v) {
+            //         if (substr($k, 0, 2) == "cb") {
+            //             $idc = substr($k, 2);
+            //             $del = 'delete from countries where id=' . $idc;
+            //             $mysqli->query($del);
+            //             if ($mysqli->errno) {
+            //                 /* Ошибка удаления страны errorDelCountry */
+            //                 include_once("pages/modals/errorDelCountry.html");
+            //             }
+            //         }
+            //     }
+            //     /* Успешное удаление страны successDelCountry */
+            //     include_once("pages/modals/successDelCountry.html");
+            // }
             ?>
 
         </div>
@@ -243,43 +222,11 @@ include_once("./functions/addCountry.php");
             <?php
             /* Добавить город */
             if (isset($_POST['addcity'])) {
-                $city = trim(htmlspecialchars($_POST['city']));
-                $cityInfo = htmlspecialchars($_POST['cityinfo']);
-                $countryid = $_POST['countryid'];
-
-                if ($city != "") {
-                    /**
-                     * Создаю папку города и ее описание
-                     * Вторым параметром указываются права на папку
-                     * 0777 - администратор
-                     */
-                    if (!is_dir("../hotel src/$countryname/$city")) {
-                        $res = $mysqli->query("select country from countries where id='$countryid'");
-                        $row = mysqli_fetch_array($res, MYSQLI_NUM);
-                        $countryname = $row[0];
-
-                        mkdir("../hotel src/$countryname/$city", 0777);
-                        
-                        $fd = fopen("../hotel src/$countryname/$city/Описание.txt", 'w+') or die(include_once("pages/modals/errorAddCity.html"));
-                        fwrite($fd, $cityInfo);
-                        fclose($fd);
-
-                        $cityInfoPath = "../hotel src/$countryname/$city/Описание.txt";
-                    }
-
-                    $ins = "insert into cities(city, countryid, cities_info) values('$city', '$countryid', '$cityInfoPath')";
-                    $mysqli->query($ins);
-                    if ($mysqli->errno) {
-                        /* Ошибка добавления города errorAddCity */
-                        include_once("pages/modals/errorAddCity.html");
-                    }
-
-                    /* Успешное добавление города successAddCity */
-                    include_once("pages/modals/successAddCity.html");
-                } else {
-                    /* Ошибка добавления страны errorAddCity */
-                    include_once("pages/modals/errorAddCity.html");
-                }
+                addCity(
+                    trim(htmlspecialchars($_POST['city'])),
+                    htmlspecialchars($_POST['cityinfo']),
+                    $_POST['countryid']
+                );
             }
 
             /* Удалить город */
@@ -419,65 +366,19 @@ include_once("./functions/addCountry.php");
             <?php
             /* Добавление отеля */
             if (isset($_POST['addhotel'])) {
-                $hotel = trim(htmlspecialchars($_POST['hotel']));
-                $cost = intval(trim(htmlspecialchars($_POST['cost'])));
-                $stars = intval($_POST['stars']);
-                $info = trim(htmlspecialchars($_POST['info']));
-                $full_info = htmlspecialchars($_POST['full_info']);
-
-                if ($hotel != "" && $cost != "" && $stars != "" && $info != "" && $full_info != "") {
-                    $str = $_POST['hcity'];
-                    list($countryId, $countryName, $cityId, $cityName) = explode(":", $str);
-
-                    /**
-                     * Создаю папку города и ее описание
-                     * Вторым параметром указываются права на папку
-                     * 0777 - администратор
-                     */
-                    if (!is_dir("../hotel src/$countryName/$cityName/$hotel")) {
-                        mkdir("../hotel src/$countryName/$cityName/$hotel", 0777);
-                        
-                        $fd = fopen("../hotel src/$countryName/$cityName/$hotel/Краткое описание.txt", 'w+') or die(include_once("pages/modals/errorAddHotel.html"));
-                        fwrite($fd, $info);
-                        fclose($fd);
-                        $hotelInfoPath = "../hotel src/$countryName/$cityName/$hotel/Краткое описание.txt";
-
-                        $fi = fopen("../hotel src/$countryName/$cityName/$hotel/Полное описание.txt", 'w+') or die(include_once("pages/modals/errorAddHotel.html"));
-                        fwrite($fi, $info);
-                        fclose($fi);
-                        $hotelFullInfoPath = "../hotel src/$countryName/$cityName/$hotel/Полное описание.txt";
-                    }
-
-                    $ins =  "insert into hotels (hotel,cityid,countryid,stars,cost,info,full_info) values('$hotel', '$cityId', '$countryId', '$stars', '$cost', '$hotelInfoPath', '$hotelFullInfoPath')";
-                    $mysqli->query($ins);
-                    if ($mysqli->errno) {
-                        /* Ошибка добавления отеля errorAddHotel */
-                        include_once("pages/modals/errorAddHotel.html");
-                    }
-
-                    /* Успешное добавление отеля successAddHotel */
-                    include_once("pages/modals/successAddHotel.html");
-                } else {
-                    /* Ошибка добавления отеля errorAddHotel */
-                    include_once("pages/modals/errorAddHotel.html");
-                }
+                addHotel(
+                    trim(htmlspecialchars($_POST['hotel'])),
+                    intval(trim(htmlspecialchars($_POST['cost']))),
+                    intval($_POST['stars']),
+                    trim(htmlspecialchars($_POST['info'])),
+                    htmlspecialchars($_POST['full_info']),
+                    $_POST['hcity']
+                );
             }
 
             /* Удаление отеля */
             if (isset($_POST['delhotel'])) {
-                foreach ($_POST as $k => $v) {
-                    if (substr($k, 0, 2) == "hb") {
-                        $idc = substr($k, 2);
-                        $del = 'delete from hotels where id=' . $idc;
-                        $mysqli->query($del);
-                        if ($mysqli->errno) {
-                            /* Ошибка удаления отеля errorDelHotel */
-                            include_once("pages/modals/errorDelHotel.html");
-                        }
-                    }
-                }
-                /* Успешное удаление отеля successDelHotel */
-                include_once("pages/modals/successDelHotel.html");
+                delHotel();
             }
 
             /* Динамическое отображение значение звезд в (input range) */
