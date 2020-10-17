@@ -6,14 +6,13 @@ function addCountry($country, $countryInfo, $imgPath) {
          * Вторым параметром указываются права на папку
          * 0777 - администратор
          */
+        $countryInfoPath = "../hotel src/$country/Описание.txt";
         if (!is_dir("../hotel src/$country")) {
             mkdir("../hotel src/$country", 0777);
             
             $fd = fopen("../hotel src/$country/Описание.txt", 'w+') or die(include_once("./pages/modals/errorAddCountry.html"));
             fwrite($fd, $countryInfo);
             fclose($fd);
-
-            $countryInfoPath = "../hotel src/$country/Описание.txt";
         }
         $mysqli = connect();
         $ins = "insert into countries(`country`, `country_img`, `country_info`) values('$country', '$imgPath', '$countryInfoPath')";

@@ -38,8 +38,9 @@
                                     </div>
 
                                     <div id='collapse-$index' class='collapse py-2' aria-labelledby='heading-$countryid' data-parent='#accordion-$countryid'>
-                                        <div class='card-body'>
-                                            $row[3]
+                                        <div class='card-body'>";
+                                        echo (file_get_contents($row[3]));
+                                        echo "
                                         </div>
 
                                         <div class='d-flex justify-content-end px-3'>

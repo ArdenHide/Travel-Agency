@@ -1,8 +1,8 @@
 <?php
 function delHotel() {
     foreach ($_POST as $k => $v) {
-        if (substr($k, 0, 2) == "hb") {
-            $idc = substr($k, 2);
+        if (substr($k, 0, 14) == "hotelCheckBox-") {
+            $idc = substr($k, 14);
             $del = 'delete from hotels where id=' . $idc;
             $mysqli =connect();
             $mysqli->query($del);

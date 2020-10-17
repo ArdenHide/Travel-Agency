@@ -8,19 +8,21 @@ function addHotel($hotel, $cost, $stars, $info, $full_info, $userCountryCity) {
          * Вторым параметром указываются права на папку
          * 0777 - администратор
          */
+        $hotelInfoPath = "../hotel src/$countryName/$cityName/$hotel/Краткое описание.txt";
+        $hotelFullInfoPath = "../hotel src/$countryName/$cityName/$hotel/Полное описание.txt";
+
         if (!is_dir("../hotel src/$countryName/$cityName/$hotel")) {
             mkdir("../hotel src/$countryName/$cityName/$hotel", 0777);
             
             $fd = fopen("../hotel src/$countryName/$cityName/$hotel/Краткое описание.txt", 'w+') or die(include_once("./pages/modals/errorAddHotel.html"));
             fwrite($fd, $info);
             fclose($fd);
-            $hotelInfoPath = "../hotel src/$countryName/$cityName/$hotel/Краткое описание.txt";
 
             $fi = fopen("../hotel src/$countryName/$cityName/$hotel/Полное описание.txt", 'w+') or die(include_once("./pages/modals/errorAddHotel.html"));
             fwrite($fi, $full_info);
             fclose($fi);
-            $hotelFullInfoPath = "../hotel src/$countryName/$cityName/$hotel/Полное описание.txt";
         }
+        
         $mysqli = connect();
         $ins =  "insert into hotels (hotel,cityid,countryid,stars,cost,info,full_info) values('$hotel', '$cityId', '$countryId', '$stars', '$cost', '$hotelInfoPath', '$hotelFullInfoPath')";
         $mysqli->query($ins);

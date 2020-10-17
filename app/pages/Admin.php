@@ -1,8 +1,10 @@
 <?php
 include_once("./functions/addCountry.php");
 include_once("./functions/delCountry.php");
+
 include_once("./functions/addCity.php");
 include_once("./functions/delCity.php");
+
 include_once("./functions/addHotel.php");
 include_once("./functions/delHotel.php");
 ?>
@@ -40,7 +42,7 @@ include_once("./functions/delHotel.php");
                                 echo '<tr>';
                                 echo "<td class='text-nowrap px-2'>$row[0]</td>";
                                 echo "<td class='text-nowrap px-2'>$row[1]</td>";
-                                echo "<td class='text-nowrap d-flex align-items-center justify-content-end'><i class='fas fa-trash-alt'></i><input type='checkbox' name='cb$row[0]' class='checkbox mx-3'></td>";
+                                echo "<td class='text-nowrap d-flex align-items-center justify-content-end'><i class='fas fa-trash-alt'></i><input type='checkbox' name='countryCheckBox-$row[0]' class='checkbox mx-3'></td>";
                                 echo '</tr>';
                             }
                             ?>
@@ -95,45 +97,16 @@ include_once("./functions/delHotel.php");
                     include_once("pages/modals/errorAddCountry.html");
                 } else {
                     addCountry(
-                        trim(htmlspecialchars($_POST['country'])),
-                        trim(htmlspecialchars($_POST['countryinfo'])),
-                        '../flags/' . $_FILES['filecountry']['name']
+                        trim(htmlspecialchars($_POST['country'])),          /* название страны */
+                        trim(htmlspecialchars($_POST['countryinfo'])),      /* описание страны */
+                        '../flags/' . $_FILES['filecountry']['name']        /* путь к флагу страны */
                     );
                 }
             }
             /* Удалить выбранные страны */
             if (isset($_POST['delcountrySelect'])) {
-                foreach ($_POST as $k => $v) {
-                    if (substr($k, 0, 2) == "cb") {
-                        $idc = substr($k, 2);
-                        $del = 'delete from countries where id=' . $idc;
-                        $mysqli->query($del);
-                        if ($mysqli->errno) {
-                            /* Ошибка удаления страны errorDelCountry */
-                            include_once("pages/modals/errorDelCountry.html");
-                        }
-                    }
-                }
-                
-                /* Успешное удаление страны successDelCountry */
-                include_once("pages/modals/successDelCountry.html");
+                delCountry();
             }
-            /* Удалить страну */
-            // if (isset($_POST['delcountryOne'])) {
-            //     foreach ($_POST as $k => $v) {
-            //         if (substr($k, 0, 2) == "cb") {
-            //             $idc = substr($k, 2);
-            //             $del = 'delete from countries where id=' . $idc;
-            //             $mysqli->query($del);
-            //             if ($mysqli->errno) {
-            //                 /* Ошибка удаления страны errorDelCountry */
-            //                 include_once("pages/modals/errorDelCountry.html");
-            //             }
-            //         }
-            //     }
-            //     /* Успешное удаление страны successDelCountry */
-            //     include_once("pages/modals/successDelCountry.html");
-            // }
             ?>
 
         </div>
@@ -172,7 +145,7 @@ include_once("./functions/delHotel.php");
                                 echo "<td class='text-nowrap px-2'>$row[0]</td>";
                                 echo "<td class='text-nowrap px-2'>$row[1]</td>";
                                 echo "<td class='text-nowrap px-2'>$row[2]</td>";
-                                echo "<td class='text-nowrap d-flex align-items-center justify-content-end'><i class='fas fa-trash-alt'></i><input type='checkbox' name='ci$row[0]' class='checkbox mx-3'></td>";
+                                echo "<td class='text-nowrap d-flex align-items-center justify-content-end'><i class='fas fa-trash-alt'></i><input type='checkbox' name='cityCheckBox-$row[0]' class='checkbox mx-3'></td>";
                                 echo '</tr>';
                             }
                             mysqli_free_result($res);
@@ -223,29 +196,15 @@ include_once("./functions/delHotel.php");
             /* Добавить город */
             if (isset($_POST['addcity'])) {
                 addCity(
-                    trim(htmlspecialchars($_POST['city'])),
-                    htmlspecialchars($_POST['cityinfo']),
-                    $_POST['countryid']
+                    trim(htmlspecialchars($_POST['city'])),     /* название города */
+                    htmlspecialchars($_POST['cityinfo']),       /* описание города */
+                    htmlspecialchars($_POST['countryid'])       /* id страны */
                 );
             }
 
             /* Удалить город */
             if (isset($_POST['delcity'])) {
-                foreach ($_POST as $k => $v) {
-                    if (substr($k, 0, 2) == "ci") {
-                        $idc = substr($k, 2);
-                        $del = 'delete from cities where id=' . $idc;
-                        $mysqli->query($del);
-                        if ($mysqli->errno) {
-                            /* Ошибка удаления города errorDelCity */
-                            include_once("pages/modals/errorDelCity.html");
-                        }
-                    }
-                    
-                }
-
-                /* Успешное удаление города successDelCity */
-                include_once("pages/modals/successDelCity.html");
+                delCity();
             }
             ?>
         </div>
@@ -290,7 +249,7 @@ include_once("./functions/delHotel.php");
                                 echo "<td class='text-nowrap px-2'>$row[2]</td>";
                                 echo "<td class='text-nowrap text-center px-2'>$row[3]<i class='fas fa-star mx-2'></i></td>";
                                 echo "<td class='text-nowrap text-center px-2'>$row[4]<i class='fas green-ic fa-dollar-sign pl-1'></i></td>";
-                                echo "<td class='text-nowrap d-flex align-items-center justify-content-end'><i class='fas fa-trash-alt'></i><input type='checkbox' name='hb$row[1]' class='checkbox mx-3'></td>";
+                                echo "<td class='text-nowrap d-flex align-items-center justify-content-end'><i class='fas fa-trash-alt'></i><input type='checkbox' name='hotelCheckBox-$row[1]' class='checkbox mx-3'></td>";
                                 echo '</tr>';
                             }
                             ?>
@@ -367,12 +326,12 @@ include_once("./functions/delHotel.php");
             /* Добавление отеля */
             if (isset($_POST['addhotel'])) {
                 addHotel(
-                    trim(htmlspecialchars($_POST['hotel'])),
-                    intval(trim(htmlspecialchars($_POST['cost']))),
-                    intval($_POST['stars']),
-                    trim(htmlspecialchars($_POST['info'])),
-                    htmlspecialchars($_POST['full_info']),
-                    $_POST['hcity']
+                    trim(htmlspecialchars($_POST['hotel'])),            /* название отеля */
+                    intval(trim(htmlspecialchars($_POST['cost']))),     /* цена отеля */
+                    intval($_POST['stars']),                            /* звезды отеля */
+                    trim(htmlspecialchars($_POST['info'])),             /* информация отеля */
+                    htmlspecialchars($_POST['full_info']),              /* полная информация отеля */
+                    $_POST['hcity']                                     /* названия и id страны и города */
                 );
             }
 

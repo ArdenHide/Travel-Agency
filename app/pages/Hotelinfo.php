@@ -4,7 +4,10 @@
 <head>
     <?php
     session_start();
-    include_once("functions.php");
+    /** Добавляю все нужные функции */
+    include_once("functions/connect.php");
+    // include_once("functions/login.php");
+    // include_once("functions/register.php");
 
     if (isset($_GET['hotel'])) {
         $hotel = $_GET['hotel'];
