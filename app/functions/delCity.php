@@ -10,9 +10,13 @@ function delCity() {
                 /* Ошибка удаления города errorDelCity */
                 include_once("./pages/modals/errorDelCity.html");
             }
+        } else {
+            /* Ошибка удаления города errorDelCity */
+            include_once("./pages/modals/errorDelCity.html");
+            exit;
         }
     }
-
+    
     /* Успешное удаление города successDelCity */
     include_once("./pages/modals/successDelCity.html");
 }

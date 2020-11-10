@@ -85,8 +85,10 @@
                                                                 }
                                                                 echo "</div>";
 
-                                                                echo"
-                                                                <p class='text-center'>$rowModal[6]</p>
+                                                                echo"<p class='text-center'>";
+                                                                echo (file_get_contents($rowModal[6]));
+                                                                echo "</p>
+                                                                
                                                                 <p class='text-center'>Стоимость отеля: <b>$rowModal[3]</b><i class='fas green-ic fa-dollar-sign'></i></p>
                                                                 <a class='btn btn-link text-primary btn-lg' href='pages/hotelinfo.php?hotel=$rowModal[5]' target='_blank'>Смотеть отель.</a>
                                                             </div>

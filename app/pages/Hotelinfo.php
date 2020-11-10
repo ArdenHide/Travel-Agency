@@ -5,9 +5,9 @@
     <?php
     session_start();
     /** Добавляю все нужные функции */
-    include_once("functions/connect.php");
-    // include_once("functions/login.php");
-    // include_once("functions/register.php");
+    include_once("../functions/connect.php");
+    // include_once("../functions/login.php");
+    // include_once("../functions/register.php");
 
     if (isset($_GET['hotel'])) {
         $hotel = $_GET['hotel'];
@@ -18,12 +18,12 @@
         $hname = $row[1];
         $hstars = $row[4];
         $hcost = $row[5];
-        $hinfo = $row[7];
+        $hinfo = $row[6];
         mysqli_free_result($res);
     }
     ?>
     <meta charset="UTF-8">
-    <title>Отель - <?php echo "$hname"; ?></title>
+    <title>Отель - <?php echo $hname; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <!-- MDB icon -->
@@ -62,7 +62,7 @@
 
         <div class="row elegant-color justify-content-center rounded flex-lg-wrap-reverse mb-4">
             <div class="col-12 col-md-10 my-4">
-                <p class='text-center lead white-text'><?php echo $hinfo; ?></p>
+                <p class='text-center lead white-text'><?php echo (file_get_contents($hinfo)); ?></p>
             </div>
             <div class="col-12 mb-4">
                 <div id='carousel' class='carousel slide carousel-fade mt-5' data-ride='carousel'>
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
                                 </div>
-                    <?php
+                            <?php
                             }
                         }
                         echo "

@@ -10,6 +10,10 @@ function delCountry() {
                 /* Ошибка удаления страны errorDelCountry */
                 include_once("pages/modals/errorDelCountry.html");
             }
+        } else {
+            /* Ошибка удаления страны errorDelCountry */
+            include_once("pages/modals/errorDelCountry.html");
+            exit;
         }
     }
     

@@ -10,8 +10,13 @@ function delHotel() {
                 /* Ошибка удаления отеля errorDelHotel */
                 include_once("./pages/modals/errorDelHotel.html");
             }
+        } else {
+            /* Ошибка удаления отеля errorDelHotel */
+            include_once("./pages/modals/errorDelHotel.html");
+            exit;
         }
     }
+    
     /* Успешное удаление отеля successDelHotel */
     include_once("./pages/modals/successDelHotel.html");
 }

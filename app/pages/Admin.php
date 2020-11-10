@@ -13,14 +13,14 @@ include_once("./functions/delHotel.php");
     <div class="row justify-content-center">
 
         <!--   Редактировать страны    -->
-        <div class="col-12 elegant-color rounded-lg p-4 mx-2 mb-4">
+        <div class="col-12 overflow-auto elegant-color rounded-lg p-4 mx-2 mb-4">
             <?php
             $mysqli = connect();
             $sel = 'select * from countries order by id';
             $res = $mysqli->query($sel);
             ?>
 
-            <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center justify-content-center justify-content-sm-between flex-wrap">
                 <span class="h2-responsive white-text font-weight-light">Редактировать страны</span>
                 <i class="fas fa-flag fa-2x warning-ic"></i>
             </div>
@@ -112,7 +112,7 @@ include_once("./functions/delHotel.php");
         </div>
 
         <!--   Редактировать города   -->
-        <div class="col-12 elegant-color rounded-lg p-4 mx-2 mb-4">
+        <div class="col-12 overflow-auto elegant-color rounded-lg p-4 mx-2 mb-4">
             <?php
             $mysqli = connect();
             $sel = 'SELECT ci.id, ci.city, co.country from countries co, cities ci WHERE ci.countryid=co.id order by id';
@@ -211,10 +211,74 @@ include_once("./functions/delHotel.php");
 
     </div>
 
+    <header class="header header-md navbar navbar-fixed-top-xs">
+        <div class="navbar-header aside bg-info  ">
+            <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
+                <i class="icon-list"></i>
+            </a>
+            <a href="http://flatfull.com/wp/musik/" class="navbar-brand text-lt" title="Just another WordPress site">
+                <i class="icon-earphones"></i>
+                <span class="hidden-nav-xs m-l-sm">Musik</span>
+            </a>
+            <a class="btn btn-link visible-xs" data-toggle="collapse" data-target="#menu">
+                <i class="icon-magnifier"></i>
+            </a>
+        </div>
+        <div id="menu" class="collapse navbar-collapse bg-white ">
+            <ul class="nav navbar-nav hidden-xs">
+                <li>
+                    <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left m-t m-l-n-xs" role="search" method="get" action="http://flatfull.com/wp/musik/">
+                <div class="form-group dropdown" id="ajax-search">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button>
+                        </span>
+                        <input type="text" value="" autocomplete="off" class="form-control input-sm no-border rounded" name="s" placeholder="Search...">
+                    </div>
+                    <a id="ajax-search-toggle" data-target="#ajax-search" data-toggle="dropdown"></a>
+                    <div class="dropdown-menu bg-white">
+                        <div id="ajax-search-loading" class="wrapper text-center"><i class="fa fa-spin icon-refresh"></i></div>
+                        <div id="ajax-search-results" class="list-group">
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="navbar-right">
+                <ul class="nav navbar-nav">
+                    <li id="cart">
+                        <a href="#" class="dropdown-toggle lt" data-toggle="dropdown">
+                            <i class="icon-basket"></i>
+                            <span class="badge badge-sm up bg-danger count edd-cart-quantity">0</span>
+                            <span class="visible-xs-inline m-l-xs">Your Basket</span>
+                        </a>
+                        <section class="dropdown-menu aside-xl animated fadeInUp no-padder bg-white">
+                            <div class="widget widget_edd_cart_widget">
+                                <p class="edd-cart-number-of-items" style="display:none;">Number of items in cart: <span class="edd-cart-quantity">0</span></p>
+                                <ul class="edd-cart">
+
+                                    <li class="cart_item empty"><span class="edd_empty_cart">Your cart is empty.</span></li>
+                                    <li class="cart_item edd-cart-meta edd_total" style="display:none;">Total: <span class="cart-total">&#36;0.00</span></li>
+                                    <li class="cart_item edd_checkout" style="display:none;"><a href="http://flatfull.com/wp/musik/checkout/">Checkout</a></li>
+
+                                </ul>
+                            </div>
+                        </section>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
     <div class="row justify-content-center">
 
         <!--   Редактировать отели   -->
-        <div class="col-12 elegant-color rounded-lg p-4 mx-2 mb-4">
+        <div class="col-12 overflow-auto elegant-color rounded-lg p-4 mx-2 mb-4">
             <?php
             $sel = 'SELECT ci.city,ho.id, ho.hotel,ho.stars,ho.cost,co.country from cities ci, hotels ho, countries co WHERE ho.cityid=ci.id and ho.countryid=co.id';
             $res = $mysqli->query($sel);
@@ -356,7 +420,7 @@ include_once("./functions/delHotel.php");
         </div>
 
         <!--   Добавить фото отеля   -->
-        <div class="col-12 elegant-color rounded-lg p-4 mx-2 mb-4">
+        <div class="col-12 overflow-auto elegant-color rounded-lg p-4 mx-2 mb-4">
 
             <div class="d-flex align-items-center justify-content-between">
                 <span class="h2-responsive white-text font-weight-light">Добавить фото отеля</span>
